@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Enumerates all the procedures within the system.
+
+ps -auxf
