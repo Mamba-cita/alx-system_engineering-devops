@@ -1,0 +1,53 @@
+Link drawing and illustration:
+
+https://www.canva.com/design/DAGAVKukbAM/UnEnLUcIOE2Py0EPIOt7Qg/edit?utm_content=DAGAVKukbAM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
+
+**1. User Request:**
+
+- A user send a request to www.foobar.com through your browser.
+- This request travels the internet and reaches the Domain Name System (DNS).
+
+**2. DNS Resolution:**
+
+- The DNS acts like a phonebook, translating the human-readable domain name "www.foobar.com" into the server's IP address (8.8.8.8 in our case).
+
+**3. Web Server (Nginx):**
+
+- Your request arrives at the server's IP address. Nginx, the web server, receives the request.
+- Nginx is responsible for serving static content like HTML, CSS, and images efficiently.
+- It checks if the requested file exists and sends it back to your browser if found.
+
+**4. Application Server:**
+
+- If the request needs dynamic content (e.g., user login), Nginx hands it off to the application server.
+- The application server (e.g., PHP, Python) processes your request using your codebase (application files).
+- It interacts with the database (MySQL) if needed, retrieving or storing data.
+
+**5. Database (MySQL):**
+
+- MySQL stores all website data like user information, product details, or blog posts.
+- The application server communicates with the database to fulfill your request.
+
+**6. Response:**
+
+- The application server assembles the final response (HTML, data, etc.) and sends it back to Nginx.
+- Nginx delivers the response to your browser, and you see the website!
+
+**Communication:**
+
+- All communication between your computer, the server, and the database happens through the Hypertext Transfer Protocol (HTTP).
+
+
+**1. Single Point of Failure (SPOF):**
+
+- This entire infrastructure relies on **one server.** If the server fails, the entire website is down. This is a **SPOF**.
+
+**2. Downtime During Maintenance:**
+
+- Updating the application or web server software often requires restarting them, leading to temporary downtime for the website.
+
+**3. Limited Scalability:**
+
+- A single server has limited resources and can't handle high traffic spikes, leading to slow performance or crashes.
+
