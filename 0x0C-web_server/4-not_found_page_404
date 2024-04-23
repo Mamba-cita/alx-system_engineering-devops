@@ -1,28 +1,9 @@
 #!/usr/bin/env bash
-# Script to install Nginx on Webserver when executed
-# Configure your Nginx server to have a custom 404 page
-# that contains the string Ceci n'est pas une page.
-sudo apt-get update -y -qq && sudo apt-get install nginx -y
-
-# Allowing nginx on firewall
-sudo ufw allow 'Nginx HTTP'
-
+# have a custom 404 page
+sudo apt-get -y update
+sudo apt-get -y install nginx
 sudo service nginx start
-
-# Backing up default index files
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
-
-# Create an index.html file
-echo -e "Hello World!" > /var/www/html/index.html
-
-# Setting up /redirect_me to a youtube video
-sudo sed -i '/server_name _;/a \\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n' /etc/nginx/sites-available/default
-
-# Setting up a 404 page
-echo "Ceci n'est pas une page" > /var/www/html/404_error.html
-sudo sed -i '/server_name _;/a \\n\terror_page 404 /404_error.html;\n' /etc/nginx/sites-available/default
-
-# Restarting nginx
+echo "Hello World!" | sudo tee /usr/share/nginx/html/error_404.html
+sudo sed -i "30i \\\terror_page 404 /error_404.html;\n\tlocation = /error_404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}" /etc/nginx/sites-available/default
 sudo service nginx restart
-sudo service nginx reload
 

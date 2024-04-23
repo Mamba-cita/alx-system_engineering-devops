@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
-# Script to install Nginx on Webserver when executed
-# This script also configures the default web page to be "Hello World"
-# Also a redirect url has been added to /redirect_me, which redirect to my
-sudo apt-get update -y -qq && sudo apt-get install nginx -y
+# The redirection must be a “301 Moved Permanently”
 
-echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
+sudo apt-get -y install nginx
+sudo bash -c 'echo "Hello World!" > /var/www/html/index.nginx-debian.html'
 
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+redirect="\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
 
-NEW_REDIRECTION="\\\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+sudo sed -i "53s|.*|$redirect|" /etc/nginx/sites-enabled/default
 
-sudo sed -i "/^}/i $NEW_REDIRECTION" /etc/nginx/sites-available/default
-sudo service nginx restart
+sudo /etc/init.d/nginx restart
 

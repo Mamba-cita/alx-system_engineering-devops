@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-#Script to install Nginx on Webserver when executed
-sudo apt-get update -y -qq && sudo apt-get install nginx -y
-sudo service nginx start
-
-sudo ufw allow 'Nginx HTTP'
-
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chown -R 755 /var/www
-
+#at the root with a curl GET request.
+sudo apt-get -y update
+sudo apt-get -y install nginx
 echo 'Hello World!' > /var/www/html/index.html
 
 sudo service nginx restart
