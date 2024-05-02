@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Bash script based on task 0 summarized
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+systemctl restart nginx
