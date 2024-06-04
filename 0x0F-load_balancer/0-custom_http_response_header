@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Bash script to configure web-02 to be identical to web-01 server.
+SERVER_HOSTNAME=$(hostname)
+
+# Update package lists and install Nginx
+sudo apt-get update -y -qq && sudo apt-get install nginx -y
+
+# Allow Nginx on firewall (if applicable)
+sudo ufw allow 'Nginx HTTP' &>/dev/null || true
+
+# Grant permissions for user to edit files
+sudo chown -R "$USER":"$USER" /var/www/html
+sudo chmod -R 755 /var/www
+
+# Backup default index files
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# Create an index.html file (replace with your desired content)
+echo "Hello World!" > /var/www/html/index.html
+
+# Configure Nginx server block with custom header
+sudo sed -i '/server {/a \    add_header X-Served-By "$SERVER_HOSTNAME";' /etc/nginx/sites-available/default
+
+# Restart Nginx
+sudo service nginx restart
+
+echo "Nginx successfully configured with custom header X-Served-By: $SERVER_HOSTNAME"
