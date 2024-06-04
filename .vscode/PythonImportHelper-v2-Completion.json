@@ -1,0 +1,92 @@
+[
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "csv",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "csv",
+        "description": "csv",
+        "detail": "csv",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "REST_API",
+        "kind": 5,
+        "importPath": "0x15-api.0-gather_data_from_an_API",
+        "description": "0x15-api.0-gather_data_from_an_API",
+        "peekOfCode": "REST_API = \"https://jsonplaceholder.typicode.com\"\nif __name__ == '__main__':\n    if len(sys.argv) > 1:\n        if re.fullmatch(r'\\d+', sys.argv[1]):\n            id = int(sys.argv[1])\n            req = requests.get('{}/users/{}'.format(REST_API, id)).json()\n            task_req = requests.get('{}/todos'.format(REST_API)).json()\n            emp_name = req.get('name')\n            tasks = list(filter(lambda x: x.get('userId') == id, task_req))\n            completed_tasks = list(filter(lambda x: x.get('completed'), tasks))",
+        "detail": "0x15-api.0-gather_data_from_an_API",
+        "documentation": {}
+    },
+    {
+        "label": "number_of_subscribers",
+        "kind": 2,
+        "importPath": "0x16-api_advanced.0-subs",
+        "description": "0x16-api_advanced.0-subs",
+        "peekOfCode": "def number_of_subscribers(subreddit):\n    \"\"\"Returns the total number of subscribers\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/about.json\"\n    headers = {\"User-Agent\": \"Python/requests\"}\n    response = requests.get(url, headers=headers, allow_redirects=False)\n    if response.status_code == 200:\n        data = response.json()\n        return data['data']['subscribers']\n    else:\n        return 0",
+        "detail": "0x16-api_advanced.0-subs",
+        "documentation": {}
+    },
+    {
+        "label": "top_ten",
+        "kind": 2,
+        "importPath": "0x16-api_advanced.1-top_ten",
+        "description": "0x16-api_advanced.1-top_ten",
+        "peekOfCode": "def top_ten(subreddit):\n    headers = {'User-Agent': 'My Python Script 1.0 (by /u/generic_username)'}\n    url = f'https://reddit.com/r/{subreddit}/hot.json?limit=10'\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        data = response.json()\n        posts = data.get('data', {}).get('children', [])\n        if posts:\n            for post in posts[:10]:",
+        "detail": "0x16-api_advanced.1-top_ten",
+        "documentation": {}
+    },
+    {
+        "label": "count_words",
+        "kind": 2,
+        "importPath": "0x16-api_advanced.100-count",
+        "description": "0x16-api_advanced.100-count",
+        "peekOfCode": "def count_words(subreddit, word_list, after=None, count_dict=None):\n    \"\"\"\n    parses the title of all hot articles, and prints a sorted count\n    of given keywords (case-insensitive, delimited by spaces.\n    Javascript should count as javascript, but java should not).\n    \"\"\"\n    if count_dict is None:\n        count_dict = {}\n    url = f\"https://www.reddit.com/r/{subreddit}/hot.json?limit=100\"\n    if after:",
+        "detail": "0x16-api_advanced.100-count",
+        "documentation": {}
+    },
+    {
+        "label": "recurse",
+        "kind": 2,
+        "importPath": "0x16-api_advanced.2-recurse",
+        "description": "0x16-api_advanced.2-recurse",
+        "peekOfCode": "def recurse(subreddit, hot_list=[]):\n    \"\"\"Recursively fetches all hot articles' titles for a given subreddit.\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/hot.json?limit=100\"\n    headers = {\"User-Agent\": \"My Python Script 1.0 (by /u/generic_username)\"}\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        data = response.json()\n        if 'data' in data and 'children' in data['data']:\n            for post in data['data']['children']:",
+        "detail": "0x16-api_advanced.2-recurse",
+        "documentation": {}
+    }
+]
