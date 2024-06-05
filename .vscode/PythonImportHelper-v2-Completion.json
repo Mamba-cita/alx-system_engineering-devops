@@ -58,7 +58,7 @@
         "kind": 2,
         "importPath": "0x16-api_advanced.0-subs",
         "description": "0x16-api_advanced.0-subs",
-        "peekOfCode": "def number_of_subscribers(subreddit):\n    \"\"\"Returns the total number of subscribers\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/about.json\"\n    headers = {\"User-Agent\": \"Python/requests\"}\n    response = requests.get(url, headers=headers, allow_redirects=False)\n    if response.status_code == 200:\n        data = response.json()\n        return data['data']['subscribers']\n    else:\n        return 0",
+        "peekOfCode": "def number_of_subscribers(subreddit):\n    \"\"\"Returns the total number of subscribers for a given subreddit.\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/about.json\"\n    headers = {\"User-Agent\": \"Python/requests\"}\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        data = response.json()\n        return data['data'].get('subscribers', 0)\n    except requests.RequestException:",
         "detail": "0x16-api_advanced.0-subs",
         "documentation": {}
     },
