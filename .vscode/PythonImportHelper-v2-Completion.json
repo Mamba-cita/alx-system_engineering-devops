@@ -58,7 +58,7 @@
         "kind": 2,
         "importPath": "0x16-api_advanced.0-subs",
         "description": "0x16-api_advanced.0-subs",
-        "peekOfCode": "def number_of_subscribers(subreddit):\n    \"\"\"Returns the total number of subscribers for a given subreddit.\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/about.json\"\n    headers = {\"User-Agent\": \"Python/requests\"}\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        data = response.json()\n        return data['data'].get('subscribers', 0)\n    except requests.RequestException:",
+        "peekOfCode": "def number_of_subscribers(subreddit):\n    \"\"\"Returns the total number of subscribers\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/about.json\"\n    headers = {\"User-Agent\": \"Python/requests\"}\n    response = requests.get(url, headers=headers, allow_redirects=False)\n    if response.status_code == 200:\n        data = response.json()\n        return data['data']['subscribers']\n    else:\n        return 0",
         "detail": "0x16-api_advanced.0-subs",
         "documentation": {}
     },
@@ -67,7 +67,16 @@
         "kind": 2,
         "importPath": "0x16-api_advanced.1-top_ten",
         "description": "0x16-api_advanced.1-top_ten",
-        "peekOfCode": "def top_ten(subreddit):\n    headers = {'User-Agent': 'My Python Script 1.0 (by /u/generic_username)'}\n    url = f'https://reddit.com/r/{subreddit}/hot.json?limit=10'\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        # Check if the response is valid JSON\n        try:\n            data = response.json()\n        except ValueError:",
+        "peekOfCode": "def top_ten(subreddit):\n    '''Retrieves the title of the top ten posts from a given subreddit.\n    '''\n    api_headers = {\n        'Accept': 'application/json',\n        'User-Agent': ' '.join([\n            'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',\n            'AppleWebKit/537.36 (KHTML, like Gecko)',\n            'Chrome/97.0.4692.71',\n            'Safari/537.36',",
+        "detail": "0x16-api_advanced.1-top_ten",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "0x16-api_advanced.1-top_ten",
+        "description": "0x16-api_advanced.1-top_ten",
+        "peekOfCode": "BASE_URL = 'https://www.reddit.com'\n'''Reddit's base API URL.\n'''\ndef top_ten(subreddit):\n    '''Retrieves the title of the top ten posts from a given subreddit.\n    '''\n    api_headers = {\n        'Accept': 'application/json',\n        'User-Agent': ' '.join([\n            'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',",
         "detail": "0x16-api_advanced.1-top_ten",
         "documentation": {}
     },
@@ -85,7 +94,16 @@
         "kind": 2,
         "importPath": "0x16-api_advanced.2-recurse",
         "description": "0x16-api_advanced.2-recurse",
-        "peekOfCode": "def recurse(subreddit, hot_list=[], after=None):\n    \"\"\"Recursively fetches all hot articles' titles for a given subreddit.\"\"\"\n    url = f\"https://www.reddit.com/r/{subreddit}/hot.json?limit=100\"\n    if after:\n        url += f\"&after={after}\"\n    headers = {\"User-Agent\": \"My Python Script 1.0 (by /u/generic_username)\"}\n    try:\n        response = requests.get(url, headers=headers, allow_redirects=False)\n        response.raise_for_status()\n        data = response.json()",
+        "peekOfCode": "def recurse(subreddit, hot_list=[], n=0, after=None):\n    '''Retrieves a list of hot posts from a given subreddit.\n    '''\n    api_headers = {\n        'Accept': 'application/json',\n        'User-Agent': ' '.join([\n            'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',\n            'AppleWebKit/537.36 (KHTML, like Gecko)',\n            'Chrome/97.0.4692.71',\n            'Safari/537.36',",
+        "detail": "0x16-api_advanced.2-recurse",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "0x16-api_advanced.2-recurse",
+        "description": "0x16-api_advanced.2-recurse",
+        "peekOfCode": "BASE_URL = 'https://www.reddit.com'\n'''Reddit's base API URL.\n'''\ndef recurse(subreddit, hot_list=[], n=0, after=None):\n    '''Retrieves a list of hot posts from a given subreddit.\n    '''\n    api_headers = {\n        'Accept': 'application/json',\n        'User-Agent': ' '.join([\n            'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',",
         "detail": "0x16-api_advanced.2-recurse",
         "documentation": {}
     }

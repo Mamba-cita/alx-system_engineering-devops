@@ -1,35 +1,49 @@
 #!/usr/bin/python3
-"""
-Recursive function that queries the Reddit API and returns
-a list containing the titles of all hot articles for a given subreddit.
-"""
-
+'''A module containing functions for working with the Reddit API.
+'''
 import requests
 
-def recurse(subreddit, hot_list=[], after=None):
-    """Recursively fetches all hot articles' titles for a given subreddit."""
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100"
-    if after:
-        url += f"&after={after}"
-    headers = {"User-Agent": "My Python Script 1.0 (by /u/generic_username)"}
 
-    try:
-        response = requests.get(url, headers=headers, allow_redirects=False)
-        response.raise_for_status()
-        data = response.json()
+BASE_URL = 'https://www.reddit.com'
+'''Reddit's base API URL.
+'''
 
-        if 'data' in data and 'children' in data['data']:
-            for post in data['data']['children']:
-                title = post['data']['title']
-                hot_list.append(title)
 
-            after = data['data'].get('after')
-            if after:
-                return recurse(subreddit, hot_list, after)
-            else:
-                return hot_list
+def recurse(subreddit, hot_list=[], n=0, after=None):
+    '''Retrieves a list of hot posts from a given subreddit.
+    '''
+    api_headers = {
+        'Accept': 'application/json',
+        'User-Agent': ' '.join([
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'AppleWebKit/537.36 (KHTML, like Gecko)',
+            'Chrome/97.0.4692.71',
+            'Safari/537.36',
+            'Edg/97.0.1072.62'
+        ])
+    }
+    sort = 'hot'
+    limit = 30
+    res = requests.get(
+        '{}/r/{}/.json?sort={}&limit={}&count={}&after={}'.format(
+            BASE_URL,
+            subreddit,
+            sort,
+            limit,
+            n,
+            after if after else ''
+        ),
+        headers=api_headers,
+        allow_redirects=False
+    )
+    if res.status_code == 200:
+        data = res.json()['data']
+        posts = data['children']
+        count = len(posts)
+        hot_list.extend(list(map(lambda x: x['data']['title'], posts)))
+        if count >= limit and data['after']:
+            return recurse(subreddit, hot_list, n + count, data['after'])
         else:
             return hot_list if hot_list else None
-    except requests.RequestException as e:
-        print(f"Error occurred: {e}")
-        return None
+    else:
+        return hot_list if hot_list else None
